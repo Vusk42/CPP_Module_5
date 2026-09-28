@@ -1,0 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Bureaucrat.hpp                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marudlof <marudlof@42.angouleme.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/09 15:20:00 by marudlof          #+#    #+#             */
+/*   Updated: 2026/09/09 15:20:00 by marudlof         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef BUREAUCRAT_HPP
+# define BUREAUCRAT_HPP
+
+# include <exception>
+# include <iostream>
+# include <string>
+
+class AForm;
+
+class Bureaucrat
+{
+	private:
+		const std::string	_name;
+		int					_grade;
+
+		static void	_checkGrade(int grade);
+
+	public:
+		static const int	HIGHEST_GRADE;
+		static const int	LOWEST_GRADE;
+
+		Bureaucrat(void);
+		Bureaucrat(const std::string& name, int grade);
+		Bureaucrat(const Bureaucrat& other);
+		Bureaucrat&	operator=(const Bureaucrat& other);
+		~Bureaucrat(void);
+
+		const std::string&	getName(void) const;
+		int					getGrade(void) const;
+
+		void	incrementGrade(void);
+		void	decrementGrade(void);
+
+		void	signForm(AForm& form) const;
+		void	executeForm(const AForm& form) const;
+
+		class GradeTooHighException : public std::exception
+		{
+			public:
+				virtual const char*	what(void) const throw();
+		};
+
+		class GradeTooLowException : public std::exception
+		{
+			public:
+				virtual const char*	what(void) const throw();
+		};
+};
+
+std::ostream&	operator<<(std::ostream& out, const Bureaucrat& bureaucrat);
+
+#endif
